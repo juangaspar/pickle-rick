@@ -12,6 +12,7 @@ import {
 import EpisodeRow from '@app/components/EpisodeRow';
 import {useNavigation} from '@react-navigation/native';
 import useEpisodesService from '@app/hooks/useEpisodesService';
+import SearchBar from './SearchBar';
 
 export default function EpisodeList() {
   const navigation = useNavigation();
@@ -23,16 +24,20 @@ export default function EpisodeList() {
 
   useEffect(() => {
     loadMoreEpisodes(searchText);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchText]);
 
   const onPress = (id: string) => {
     navigation.navigate('EpisodeDetails', {episodeId: id});
   };
 
-  const onSearchChange = (
-    e: NativeSyntheticEvent<TextInputChangeEventData>,
-  ) => {
-    setSearchText(e.nativeEvent.text);
+  const onSearchChange = (text: string) => {
+    setSearchText(text);
+  };
+
+  const onSearchClose = () => {
+    setShowSearchBar(false);
+    setSearchText('');
   };
 
   return (
@@ -66,7 +71,9 @@ export default function EpisodeList() {
           />
         </TouchableOpacity>
       )}
-      {showSearchBar && <TextInput onChange={onSearchChange} />}
+      {showSearchBar && (
+        <SearchBar onChange={onSearchChange} onClose={onSearchClose} />
+      )}
     </>
   );
 }
