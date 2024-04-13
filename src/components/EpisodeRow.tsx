@@ -3,10 +3,10 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {Episode} from '@app/globals/types';
 
 export default function EpisodeRow({
-  episode,
+  item: episode,
   onPress,
 }: {
-  episode: Episode;
+  item: Episode;
   onPress: Function;
 }) {
   const onPressHandler = () => {

@@ -1,10 +1,11 @@
+import CharacterAvatar from '@app/components/CharacterAvatar';
 import {episodesAtom} from '@app/globals/store';
 import {EpisodeDetailsScreenRouteProp} from '@app/globals/types';
 import {useNavigation} from '@react-navigation/native';
 import {useAtom} from 'jotai/react';
 import {selectAtom} from 'jotai/utils';
 import * as React from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 
 export default function EpisodeDetails({
   route,
@@ -16,7 +17,7 @@ export default function EpisodeDetails({
     React.useMemo(
       () =>
         selectAtom(episodesAtom, episodes =>
-          episodes.find(episode => episode.id === route.params.episodeId),
+          episodes.find(episode => episode.id === route.params.id),
         ),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [],
@@ -29,7 +30,17 @@ export default function EpisodeDetails({
 
   return (
     <View>
-      <Text>Home Screen</Text>
+      <Text>{`${episodeDetails?.episode}: ${episodeDetails?.name}`}</Text>
+      <Text>{`${episodeDetails?.air_date}`}</Text>
+      <View>
+        <Text>Characters</Text>
+
+        <FlatList
+          horizontal
+          data={episodeDetails?.characters || []}
+          renderItem={({item}) => <CharacterAvatar characterUrl={item} />}
+        />
+      </View>
     </View>
   );
 }

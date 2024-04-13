@@ -1,21 +1,53 @@
-import {GetEpisodesRequestResult} from '@app/globals/types';
+import {locationsAtom} from '@app/globals/store';
+import {
+  GetLocationsRequestError,
+  GetLocationsRequestResult,
+} from '@app/globals/types';
+import {useAtom} from 'jotai/react';
 import {useState} from 'react';
 
-export default function useEpisodesService() {
+export default function useLocationsService() {
   const [nextPage, setNextPage] = useState(1);
+  const [locations, setLocations] = useAtom(locationsAtom);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [searchText, setSearchText] = useState<string | null>(null);
 
-  const loadMore = async () => {
+  const loadMore = async (search: string | null) => {
+    if (isLoading) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    const isNewSearch = search !== searchText;
+    const page = isNewSearch ? 1 : nextPage;
+
+    if (search !== null) {
+      setSearchText(search);
+    }
+
     try {
       const response: Response = await fetch(
-        `https://rickandmortyapi.com/api/location?page=${nextPage}`,
+        `https://rickandmortyapi.com/api/location?page=${page}${
+          search ? `&name=${search}` : ''
+        }`,
       );
-      const result: GetEpisodesRequestResult = await response.json();
-      setNextPage(nextPage + 1);
-      return result.results;
+      const result: GetLocationsRequestResult | GetLocationsRequestError =
+        await response.json();
+
+      if ((result as GetLocationsRequestResult).results !== undefined) {
+        const newLocations = (result as GetLocationsRequestResult).results;
+        setNextPage(page + 1);
+        setLocations(
+          isNewSearch ? [...newLocations] : [...locations, ...newLocations],
+        );
+      }
     } catch (error) {
-      return null;
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  return [loadMore];
+  return [locations, loadMore, isLoading] as const;
 }

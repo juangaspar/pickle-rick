@@ -3,10 +3,10 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {Location} from '@app/globals/types';
 
 export default function LocationRow({
-  location,
+  item: location,
   onPress,
 }: {
-  location: Location;
+  item: Location;
   onPress: Function;
 }) {
   const onPressHandler = () => {

@@ -16,7 +16,7 @@ export default function LocationDetails({
     React.useMemo(
       () =>
         selectAtom(locationsAtom, locations =>
-          locations.find(location => location.id === route.params.locationId),
+          locations.find(location => location.id === route.params.id),
         ),
       // eslint-disable-next-line react-hooks/exhaustive-deps
       [],

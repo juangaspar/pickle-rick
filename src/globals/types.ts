@@ -20,6 +20,12 @@ export type Location = {
   created: string;
 };
 
+export type Character = {
+  id: number;
+  name: string;
+  image: string;
+};
+
 type RequestResult = {
   info: {
     count: number;
@@ -42,10 +48,14 @@ export interface GetLocationsRequestResult extends RequestResult {
   results: Location[];
 }
 
+export type GetLocationsRequestError = {
+  error: string;
+};
+
 type RootStackParamList = {
   Home: undefined;
-  EpisodeDetails: {episodeId: number};
-  LocationDetails: {locationId: number};
+  EpisodeDetails: {id: number};
+  LocationDetails: {id: number};
 };
 
 export type EpisodeDetailsScreenRouteProp = RouteProp<
