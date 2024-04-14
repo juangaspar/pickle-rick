@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
   input: {
     flexGrow: 1,
     marginLeft: 10,
-    fontSize: 16,
-    color: '#333333', // Color of the text input
+    fontSize: 16, // Color of the text input
   },
 });

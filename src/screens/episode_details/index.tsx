@@ -4,7 +4,7 @@ import {EpisodeDetailsScreenRouteProp} from '@app/globals/types';
 import {useNavigation} from '@react-navigation/native';
 import {useAtom} from 'jotai/react';
 import {selectAtom} from 'jotai/utils';
-import * as React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -12,6 +12,10 @@ import {
   StyleSheet,
   Button,
   TextInput,
+  NativeSyntheticEvent,
+  TextInputChangeEventData,
+  ScrollView,
+  Alert,
 } from 'react-native';
 
 export default function EpisodeDetails({
@@ -20,6 +24,11 @@ export default function EpisodeDetails({
   route: EpisodeDetailsScreenRouteProp;
 }) {
   const navigation = useNavigation();
+  const [nameField, setNameField] = useState('');
+  const [emailField, setEmailField] = useState('');
+  const [commentField, setCommentField] = useState('');
+  const [isSubmitEnabled, setIsSubmitEnabled] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [episodeDetails] = useAtom(
     React.useMemo(
       () =>
@@ -35,8 +44,64 @@ export default function EpisodeDetails({
     navigation.setOptions({title: episodeDetails?.name});
   }, [navigation, episodeDetails]);
 
+  const onChangeName = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+    const newName = e.nativeEvent.text;
+    setNameField(newName);
+    checkForm(newName, emailField, commentField);
+  };
+
+  const onChangeEmail = (e: NativeSyntheticEvent<TextInputChangeEventData>) => {
+    const newEmail = e.nativeEvent.text;
+    setEmailField(newEmail);
+    checkForm(nameField, newEmail, commentField);
+  };
+
+  const onChangeComment = (
+    e: NativeSyntheticEvent<TextInputChangeEventData>,
+  ) => {
+    const newComment = e.nativeEvent.text;
+    setCommentField(newComment);
+    checkForm(nameField, emailField, newComment);
+  };
+
+  const checkForm = (name: string, email: string, comment: string) => {
+    setIsSubmitEnabled(
+      name.trim() !== '' && email.trim() !== '' && comment.trim() !== '',
+    );
+  };
+
+  const submitForm = async () => {
+    setIsSubmitting(true);
+
+    try {
+      await fetch('https://661b7d5165444945d04f9696.mockapi.io/comments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: nameField,
+          email: emailField,
+          comment: commentField,
+        }),
+      });
+
+      setNameField('');
+      setEmailField('');
+      setCommentField('');
+      setIsSubmitEnabled(false);
+      Alert.alert('Tu comentario se ha enviado con éxito. Gracias.');
+    } catch (error) {
+      Alert.alert(
+        'Ha ocurrido un error. Vuelve a enviar tu comentario de nuevo por favor.',
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text
         style={
           styles.episode
@@ -51,12 +116,39 @@ export default function EpisodeDetails({
           renderItem={({item}) => <CharacterAvatar characterUrl={item} />}
         />
       </View>
-      <Text style={styles.commentsLabel}>Comments</Text>
-      <TextInput style={styles.nameField} />
-      <TextInput style={styles.emailField} />
-      <TextInput style={styles.commentsField} />
-      <Button title="Enviar" />
-    </View>
+      <View style={styles.formContainer}>
+        <Text style={styles.commentsLabel}>Comments</Text>
+        <TextInput
+          placeholder="Name"
+          style={styles.nameField}
+          value={nameField}
+          onChange={onChangeName}
+          editable={!isSubmitting}
+        />
+        <TextInput
+          placeholder="Email"
+          style={styles.emailField}
+          value={emailField}
+          onChange={onChangeEmail}
+          editable={!isSubmitting}
+        />
+        <TextInput
+          placeholder="Comments"
+          style={styles.commentsField}
+          multiline
+          maxLength={500}
+          numberOfLines={4}
+          value={commentField}
+          onChange={onChangeComment}
+          editable={!isSubmitting}
+        />
+        <Button
+          title={isSubmitting ? 'Enviando...' : 'Enviar'}
+          disabled={!isSubmitEnabled || isSubmitting}
+          onPress={submitForm}
+        />
+      </View>
+    </ScrollView>
   );
 }
 
@@ -77,6 +169,15 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   charactersLabel: {marginBottom: 10, fontWeight: 'bold'},
+  formContainer: {
+    marginRight: 16,
+  },
   commentsLabel: {marginBottom: 10, fontWeight: 'bold'},
-  nameField: {},
+  nameField: {marginBottom: 6, backgroundColor: 'white', borderRadius: 4},
+  emailField: {marginBottom: 6, backgroundColor: 'white', borderRadius: 4},
+  commentsField: {
+    marginBottom: 6,
+    backgroundColor: 'white',
+    borderRadius: 4,
+  },
 });
