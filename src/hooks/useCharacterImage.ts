@@ -4,7 +4,7 @@ import {useAtom} from 'jotai/react';
 import {Character} from '@app/globals/types';
 
 export default function useCharacterImage(characterUrl: string) {
-  const [characters, setCharacters] = useAtom(charactersAtom);
+  const [characters, dispatch] = useAtom(charactersAtom);
 
   useEffect(() => {
     if (!characters[characterUrl]) {
@@ -18,7 +18,7 @@ export default function useCharacterImage(characterUrl: string) {
       const response: Response = await fetch(characterUrl);
       const result: Character = await response.json();
 
-      setCharacters({...characters, [characterUrl]: result});
+      dispatch({type: 'add', url: characterUrl, character: result});
     } catch (error) {
       console.log(error);
     } finally {

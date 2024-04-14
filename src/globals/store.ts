@@ -1,15 +1,21 @@
-import {createStore, atom} from 'jotai';
+import {atom} from 'jotai';
 import {Episode, Location, Character} from './types';
+import {atomWithReducer} from 'jotai/utils';
 
-const store = createStore();
 const episodesAtom = atom<Episode[]>([]);
-store.set(episodesAtom, []);
 
 const locationsAtom = atom<Location[]>([]);
-store.set(locationsAtom, []);
 
-const charactersAtom = atom<{[key: string]: Character}>({});
-store.set(charactersAtom, {});
+const charactersReducer = (
+  characters: {[key: string]: Character},
+  action: {type: string; url: string; character: Character},
+) => {
+  if (action.type === 'add') {
+    return {...characters, [action.url]: action.character};
+  }
 
+  throw new Error('unknown action type');
+};
+
+const charactersAtom = atomWithReducer({}, charactersReducer);
 export {episodesAtom, locationsAtom, charactersAtom};
-export default store;

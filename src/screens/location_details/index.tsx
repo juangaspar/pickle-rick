@@ -3,8 +3,9 @@ import {locationsAtom} from '@app/globals/store';
 import {LocationDetailsScreenRouteProp} from '@app/globals/types';
 import {useAtom} from 'jotai/react';
 import {selectAtom} from 'jotai/utils';
-import {View, Text} from 'react-native';
+import {View, Text, StyleSheet, FlatList} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import CharacterAvatar from '@app/components/CharacterAvatar';
 
 export default function LocationDetails({
   route,
@@ -28,8 +29,34 @@ export default function LocationDetails({
   }, [navigation, locationDetails]);
 
   return (
-    <View>
-      <Text>{locationDetails?.name}</Text>
+    <View style={styles.container}>
+      <Text style={styles.name}>{`${locationDetails?.name}`}</Text>
+      <Text style={styles.dimension}>{`${locationDetails?.dimension}`}</Text>
+      <View>
+        <Text style={styles.charactersLabel}>Residents</Text>
+
+        <FlatList
+          horizontal
+          data={locationDetails?.residents || []}
+          renderItem={({item}) => <CharacterAvatar characterUrl={item} />}
+        />
+      </View>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginLeft: 16,
+    marginTop: 16,
+  },
+  name: {
+    fontSize: 18,
+    marginBottom: 4,
+    fontWeight: 'bold',
+  },
+  dimension: {
+    marginBottom: 12,
+  },
+  charactersLabel: {marginBottom: 10, fontWeight: 'bold'},
+});

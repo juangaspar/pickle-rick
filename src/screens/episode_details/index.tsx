@@ -5,7 +5,14 @@ import {useNavigation} from '@react-navigation/native';
 import {useAtom} from 'jotai/react';
 import {selectAtom} from 'jotai/utils';
 import * as React from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Button,
+  TextInput,
+} from 'react-native';
 
 export default function EpisodeDetails({
   route,
@@ -29,11 +36,14 @@ export default function EpisodeDetails({
   }, [navigation, episodeDetails]);
 
   return (
-    <View>
-      <Text>{`${episodeDetails?.episode}: ${episodeDetails?.name}`}</Text>
-      <Text>{`${episodeDetails?.air_date}`}</Text>
-      <View>
-        <Text>Characters</Text>
+    <View style={styles.container}>
+      <Text
+        style={
+          styles.episode
+        }>{`${episodeDetails?.episode}: ${episodeDetails?.name}`}</Text>
+      <Text style={styles.airDate}>{`${episodeDetails?.air_date}`}</Text>
+      <View style={styles.charactersContainer}>
+        <Text style={styles.charactersLabel}>Characters</Text>
 
         <FlatList
           horizontal
@@ -41,6 +51,32 @@ export default function EpisodeDetails({
           renderItem={({item}) => <CharacterAvatar characterUrl={item} />}
         />
       </View>
+      <Text style={styles.commentsLabel}>Comments</Text>
+      <TextInput style={styles.nameField} />
+      <TextInput style={styles.emailField} />
+      <TextInput style={styles.commentsField} />
+      <Button title="Enviar" />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginLeft: 16,
+    marginTop: 16,
+  },
+  episode: {
+    fontSize: 18,
+    marginBottom: 4,
+    fontWeight: 'bold',
+  },
+  airDate: {
+    marginBottom: 12,
+  },
+  charactersContainer: {
+    marginBottom: 12,
+  },
+  charactersLabel: {marginBottom: 10, fontWeight: 'bold'},
+  commentsLabel: {marginBottom: 10, fontWeight: 'bold'},
+  nameField: {},
+});
