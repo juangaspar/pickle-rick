@@ -1,79 +1,35 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-# Getting Started
+# Pickle Rick
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+Este proyecto tiene como objetivo demostrar la implementación de una app usando React Native mediante el uso de APIs públicas.
 
-## Step 1: Start the Metro Server
+## Características
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+- Muestra el listado de episodios y localizaciones de la serie Rick and Morty
+- Muestra el detalle de los episodios y las localizaciones
+- Permite el envío de comentarios en la página de detalle de episodio
+- Soporte multilenguaje (Español e inglés)
+- Soporte de tema oscuro y claro
 
-To start Metro, run the following command from the _root_ of your React Native project:
+## Tecnologías utilizadas
+- React Native para la base del proyecto (https://reactnative.dev/)
+- React Navigation para la gestión de la navegación (https://reactnavigation.org/)
+- Jotai para la gestión de los estados globales de la aplicación (https://jotai.org/)
+- i18Next para el soporte multilenguaje (https://www.i18next.com/)
 
-```bash
-# using npm
-npm start
+## Capturas
+![Screenshot_1713216728](https://github.com/juangaspar/pickle-rick/assets/3462727/44a7b8e8-2e2a-4d5d-8516-d38867e8f6fd)
+![Screenshot_1713216740](https://github.com/juangaspar/pickle-rick/assets/3462727/e4dc687c-2459-447c-ad3e-ac3976993bc3)
+![Screenshot_1713218289](https://github.com/juangaspar/pickle-rick/assets/3462727/5770f9f4-2da7-4117-b536-5a439f828af3)
+![Screenshot_1713218304](https://github.com/juangaspar/pickle-rick/assets/3462727/03f00317-bd34-4e73-baf8-0db8574f952b)
 
-# OR using Yarn
-yarn start
-```
+## Posibles mejoras en el proyecto
 
-## Step 2: Start your Application
+Hay cosas mejorables dentro del proyecto que no se han realizado por una cuestión de tiempo. A continuación listo algunas de ellas:
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+- Mejoras en la organización del código. Hay componentes que podrían reducir su tamaño como EpisodeScreen extrayendo algunas partes a componentes más pequeños.
+- Se podrían extraer las llamadas a la API a otra capa para poder desacoplar la implentación en los hooks.
+- Hay algunos errores de tipos que deberían ser resueltos.
+- No se han implementado unit tests.
+- Etc..
 
-### For Android
-
-```bash
-# using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### For iOS
-
-```bash
-# using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
