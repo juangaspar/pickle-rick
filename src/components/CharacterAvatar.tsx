@@ -1,18 +1,20 @@
 import * as React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import useCharacterImage from '@app/hooks/useCharacterImage';
+import {useTheme} from '@react-navigation/native';
 
 export default function CharacterAvatar({
   characterUrl,
 }: {
   characterUrl: string;
 }) {
+  const {colors} = useTheme();
   const character = useCharacterImage(characterUrl);
 
   return character != null ? (
     <View style={styles.container}>
       <Image source={{uri: character.image}} style={styles.image} />
-      <Text style={styles.text}>{character.name}</Text>
+      <Text style={{...styles.text, color: colors.text}}>{character.name}</Text>
     </View>
   ) : (
     <View style={styles.container}>

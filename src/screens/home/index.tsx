@@ -5,6 +5,7 @@ import EpisodeRow from '@app/components/EpisodeRow';
 import useEpisodesService from '@app/hooks/useEpisodesService';
 import useLocationsService from '@app/hooks/useLocationsService';
 import LocationRow from '@app/components/LocationRow';
+import {useTranslation} from 'react-i18next';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -13,7 +14,7 @@ function EpisodeList() {
     <CustomList
       ItemRow={EpisodeRow}
       useLoadService={useEpisodesService}
-      detailsRoute={'EpisodeDetails'}
+      detailsRoute={'episodeDetails'}
     />
   );
 }
@@ -23,16 +24,30 @@ function LocationList() {
     <CustomList
       ItemRow={LocationRow}
       useLoadService={useLocationsService}
-      detailsRoute={'LocationDetails'}
+      detailsRoute={'locationDetails'}
     />
   );
 }
 
 export default function Home() {
+  const {t} = useTranslation();
+
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Episode List" component={EpisodeList} />
-      <Tab.Screen name="Location List" component={LocationList} />
+      <Tab.Screen
+        options={() => ({
+          title: t('episodes'),
+        })}
+        name={'Episode List'}
+        component={EpisodeList}
+      />
+      <Tab.Screen
+        options={() => ({
+          title: t('locations'),
+        })}
+        name="Location List"
+        component={LocationList}
+      />
     </Tab.Navigator>
   );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {Episode} from '@app/globals/types';
+import {useTheme} from '@react-navigation/native';
 
 export default function EpisodeRow({
   item: episode,
@@ -9,6 +10,7 @@ export default function EpisodeRow({
   item: Episode;
   onPress: Function;
 }) {
+  const {colors} = useTheme();
   const onPressHandler = () => {
     onPress(episode.id);
   };
@@ -16,9 +18,13 @@ export default function EpisodeRow({
   return (
     <TouchableOpacity onPress={onPressHandler}>
       <View style={styles.rowContainer}>
-        <Text style={styles.episode}>{episode.episode}</Text>
-        <Text style={styles.name}>{episode.name}</Text>
-        <Text style={styles.airData}>{episode.air_date}</Text>
+        <Text style={{...styles.episode, color: colors.text}}>
+          {episode.episode}
+        </Text>
+        <Text style={{...styles.name, color: colors.text}}>{episode.name}</Text>
+        <Text style={{...styles.airData, color: colors.text}}>
+          {episode.air_date}
+        </Text>
       </View>
     </TouchableOpacity>
   );

@@ -4,14 +4,17 @@ import {LocationDetailsScreenRouteProp} from '@app/globals/types';
 import {useAtom} from 'jotai/react';
 import {selectAtom} from 'jotai/utils';
 import {View, Text, StyleSheet, FlatList} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import CharacterAvatar from '@app/components/CharacterAvatar';
+import {useTranslation} from 'react-i18next';
 
 export default function LocationDetails({
   route,
 }: {
   route: LocationDetailsScreenRouteProp;
 }) {
+  const {colors} = useTheme();
+  const {t} = useTranslation();
   const navigation = useNavigation();
   const [locationDetails] = useAtom(
     React.useMemo(
@@ -30,10 +33,24 @@ export default function LocationDetails({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.name}>{`${locationDetails?.name}`}</Text>
-      <Text style={styles.dimension}>{`${locationDetails?.dimension}`}</Text>
+      <Text
+        style={{
+          ...styles.name,
+          color: colors.text,
+        }}>{`${locationDetails?.name}`}</Text>
+      <Text
+        style={{
+          ...styles.dimension,
+          color: colors.text,
+        }}>{`${locationDetails?.dimension}`}</Text>
       <View>
-        <Text style={styles.charactersLabel}>Residents</Text>
+        <Text
+          style={{
+            ...styles.charactersLabel,
+            color: colors.text,
+          }}>
+          {t('residents')}
+        </Text>
 
         <FlatList
           horizontal

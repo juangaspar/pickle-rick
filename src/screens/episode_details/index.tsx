@@ -1,10 +1,11 @@
 import CharacterAvatar from '@app/components/CharacterAvatar';
 import {episodesAtom} from '@app/globals/store';
 import {EpisodeDetailsScreenRouteProp} from '@app/globals/types';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import {useAtom} from 'jotai/react';
 import {selectAtom} from 'jotai/utils';
 import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   View,
   Text,
@@ -18,11 +19,15 @@ import {
   Alert,
 } from 'react-native';
 
+const COMMENT_MAX_LENGTH = 500;
+
 export default function EpisodeDetails({
   route,
 }: {
   route: EpisodeDetailsScreenRouteProp;
 }) {
+  const {colors} = useTheme();
+  const {t} = useTranslation();
   const navigation = useNavigation();
   const [nameField, setNameField] = useState('');
   const [emailField, setEmailField] = useState('');
@@ -90,11 +95,9 @@ export default function EpisodeDetails({
       setEmailField('');
       setCommentField('');
       setIsSubmitEnabled(false);
-      Alert.alert('Tu comentario se ha enviado con éxito. Gracias.');
+      Alert.alert(t('commentSuccess'));
     } catch (error) {
-      Alert.alert(
-        'Ha ocurrido un error. Vuelve a enviar tu comentario de nuevo por favor.',
-      );
+      Alert.alert(t('commentError'));
     } finally {
       setIsSubmitting(false);
     }
@@ -103,12 +106,23 @@ export default function EpisodeDetails({
   return (
     <ScrollView style={styles.container}>
       <Text
-        style={
-          styles.episode
-        }>{`${episodeDetails?.episode}: ${episodeDetails?.name}`}</Text>
-      <Text style={styles.airDate}>{`${episodeDetails?.air_date}`}</Text>
+        style={{
+          ...styles.episode,
+          color: colors.text,
+        }}>{`${episodeDetails?.episode}: ${episodeDetails?.name}`}</Text>
+      <Text
+        style={{
+          ...styles.airDate,
+          color: colors.text,
+        }}>{`${episodeDetails?.air_date}`}</Text>
       <View style={styles.charactersContainer}>
-        <Text style={styles.charactersLabel}>Characters</Text>
+        <Text
+          style={{
+            ...styles.charactersLabel,
+            color: colors.text,
+          }}>
+          {t('characters')}
+        </Text>
 
         <FlatList
           horizontal
@@ -117,33 +131,65 @@ export default function EpisodeDetails({
         />
       </View>
       <View style={styles.formContainer}>
-        <Text style={styles.commentsLabel}>Comments</Text>
+        <Text
+          style={{
+            ...styles.commentsLabel,
+            color: colors.text,
+          }}>
+          {t('comments')}
+        </Text>
         <TextInput
-          placeholder="Name"
-          style={styles.nameField}
+          placeholder={t('name')}
+          placeholderTextColor={colors.text}
+          style={{
+            ...styles.nameField,
+            color: colors.text,
+            backgroundColor: colors.card,
+          }}
           value={nameField}
           onChange={onChangeName}
           editable={!isSubmitting}
         />
         <TextInput
-          placeholder="Email"
-          style={styles.emailField}
+          placeholder={t('email')}
+          placeholderTextColor={colors.text}
+          style={{
+            ...styles.emailField,
+            color: colors.text,
+            backgroundColor: colors.card,
+          }}
           value={emailField}
           onChange={onChangeEmail}
           editable={!isSubmitting}
         />
-        <TextInput
-          placeholder="Comments"
-          style={styles.commentsField}
-          multiline
-          maxLength={500}
-          numberOfLines={4}
-          value={commentField}
-          onChange={onChangeComment}
-          editable={!isSubmitting}
-        />
+        <View
+          style={{
+            ...styles.commentsFieldContainer,
+            backgroundColor: colors.card,
+          }}>
+          <TextInput
+            placeholder={t('comment')}
+            placeholderTextColor={colors.text}
+            style={{
+              ...styles.commentsField,
+              color: colors.text,
+              backgroundColor: colors.card,
+            }}
+            multiline
+            maxLength={COMMENT_MAX_LENGTH}
+            numberOfLines={4}
+            value={commentField}
+            onChange={onChangeComment}
+            editable={!isSubmitting}
+          />
+          <Text
+            style={{
+              ...styles.commentsFieldCounter,
+              color: colors.text,
+            }}>{`${commentField.length}/${COMMENT_MAX_LENGTH}`}</Text>
+        </View>
         <Button
-          title={isSubmitting ? 'Enviando...' : 'Enviar'}
+          title={isSubmitting ? `${t('sending')}...` : t('send')}
           disabled={!isSubmitEnabled || isSubmitting}
           onPress={submitForm}
         />
@@ -171,13 +217,21 @@ const styles = StyleSheet.create({
   charactersLabel: {marginBottom: 10, fontWeight: 'bold'},
   formContainer: {
     marginRight: 16,
+    marginBottom: 16,
   },
   commentsLabel: {marginBottom: 10, fontWeight: 'bold'},
-  nameField: {marginBottom: 6, backgroundColor: 'white', borderRadius: 4},
-  emailField: {marginBottom: 6, backgroundColor: 'white', borderRadius: 4},
-  commentsField: {
+  nameField: {marginBottom: 6, borderRadius: 4},
+  emailField: {marginBottom: 6, borderRadius: 4},
+  commentsFieldContainer: {
     marginBottom: 6,
-    backgroundColor: 'white',
     borderRadius: 4,
+  },
+  commentsField: {
+    marginBottom: 16,
+  },
+  commentsFieldCounter: {
+    position: 'absolute',
+    right: 4,
+    bottom: 4,
   },
 });

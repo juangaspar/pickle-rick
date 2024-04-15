@@ -3,9 +3,7 @@ import {Episode, Location, Character} from './types';
 import {atomWithReducer} from 'jotai/utils';
 
 const episodesAtom = atom<Episode[]>([]);
-
 const locationsAtom = atom<Location[]>([]);
-
 const charactersReducer = (
   characters: {[key: string]: Character},
   action: {type: string; url: string; character: Character},
@@ -18,4 +16,7 @@ const charactersReducer = (
 };
 
 const charactersAtom = atomWithReducer({}, charactersReducer);
-export {episodesAtom, locationsAtom, charactersAtom};
+const themeAtom = atom('default');
+const languageAtom = atom('es');
+
+export {episodesAtom, locationsAtom, charactersAtom, languageAtom, themeAtom};

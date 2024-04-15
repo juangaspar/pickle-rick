@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {useDebounce} from '@uidotdev/usehooks';
 import {
+  ActivityIndicator,
   FlatList,
   Image,
   StyleSheet,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import SearchBar from '@app/components/SearchBar';
 
 export default function CustomList({
@@ -19,13 +20,12 @@ export default function CustomList({
   useLoadService: Function;
   detailsRoute: string;
 }) {
+  const {colors} = useTheme();
   const navigation = useNavigation();
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [items, loadMore, isLoading] = useLoadService();
   const [searchText, setSearchText] = useState<string | null>(null);
   const debouncedSearchText = useDebounce(searchText, 500);
-
-  useEffect(() => {}, [isLoading]);
 
   useEffect(() => {
     loadMore(debouncedSearchText);
@@ -48,20 +48,28 @@ export default function CustomList({
   return (
     <>
       <FlatList
-        ListFooterComponent={<View style={{height: 72}} />}
+        ListFooterComponent={<View style={styles.listFooter} />}
         data={items}
         onEndReached={() => {
           loadMore(debouncedSearchText);
         }}
         renderItem={({item}) => <ItemRow item={item} onPress={onPress} />}
       />
+      {isLoading && (
+        <ActivityIndicator
+          style={{
+            ...styles.loadingIcon,
+            backgroundColor: colors.card,
+          }}
+        />
+      )}
       {!showSearchBar && (
         <TouchableOpacity
-          style={styles.searchButton}
+          style={{...styles.searchButton, backgroundColor: colors.card}}
           onPress={() => setShowSearchBar(true)}>
           <Image
             source={require('@app/assets/search.png')}
-            style={styles.searchButtonIcon}
+            style={{...styles.searchButtonIcon, tintColor: colors.text}}
           />
         </TouchableOpacity>
       )}
@@ -73,6 +81,18 @@ export default function CustomList({
 }
 
 const styles = StyleSheet.create({
+  listFooter: {
+    height: 72,
+  },
+  loadingIcon: {
+    position: 'absolute',
+    bottom: 10,
+    left: 10,
+    width: 48,
+    height: 48,
+    borderRadius: 8,
+    opacity: 0.5,
+  },
   searchButton: {
     position: 'absolute',
     bottom: 10,
@@ -82,7 +102,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ffffff', // Background color for the inner container
     borderRadius: 8,
     padding: 10,
     elevation: 2,
@@ -90,6 +109,5 @@ const styles = StyleSheet.create({
   searchButtonIcon: {
     width: 24,
     height: 24,
-    tintColor: '#888888', // Color of the search and close icons
   },
 });

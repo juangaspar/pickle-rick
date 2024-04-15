@@ -1,4 +1,6 @@
+import {useTheme} from '@react-navigation/native';
 import * as React from 'react';
+import {useTranslation} from 'react-i18next';
 import {
   Image,
   NativeSyntheticEvent,
@@ -19,18 +21,21 @@ export default function SearchBar({onChange, onClose}: SearchBarParameters) {
   ) => {
     onChange(e.nativeEvent.text);
   };
+  const {t} = useTranslation();
+  const {colors} = useTheme();
 
   return (
     <View style={styles.outerContainer}>
-      <View style={styles.container}>
+      <View style={{...styles.container, backgroundColor: colors.card}}>
         <TextInput
-          style={styles.input}
+          style={{...styles.input, color: colors.text}}
           onChange={onChangeHandler}
-          placeholder="Search..."
+          placeholder={`${t('search')}...`}
+          placeholderTextColor={colors.text}
         />
         <TouchableOpacity onPress={onClose}>
           <Image
-            style={styles.icon}
+            style={{...styles.icon, tintColor: colors.text}}
             source={require('@app/assets/close.png')} // Assuming you have a close icon
           />
         </TouchableOpacity>
@@ -50,15 +55,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ffffff', // Background color for the inner container
     borderRadius: 8,
     paddingHorizontal: 10,
     elevation: 2,
   },
   icon: {
     width: 20,
-    height: 20,
-    tintColor: '#888888', // Color of the search and close icons
+    height: 20, // Color of the search and close icons
   },
   input: {
     flexGrow: 1,

@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {Location} from '@app/globals/types';
+import {useTheme} from '@react-navigation/native';
 
 export default function LocationRow({
   item: location,
@@ -9,6 +10,8 @@ export default function LocationRow({
   item: Location;
   onPress: Function;
 }) {
+  const {colors} = useTheme();
+
   const onPressHandler = () => {
     onPress(location.id);
   };
@@ -16,9 +19,15 @@ export default function LocationRow({
   return (
     <TouchableOpacity onPress={onPressHandler}>
       <View style={styles.rowContainer}>
-        <Text style={styles.type}>{location.type}</Text>
-        <Text style={styles.name}>{location.name}</Text>
-        <Text style={styles.dimension}>{location.dimension}</Text>
+        <Text style={{...styles.type, color: colors.text}}>
+          {location.type}
+        </Text>
+        <Text style={{...styles.name, color: colors.text}}>
+          {location.name}
+        </Text>
+        <Text style={{...styles.dimension, color: colors.text}}>
+          {location.dimension}
+        </Text>
       </View>
     </TouchableOpacity>
   );
