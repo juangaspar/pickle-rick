@@ -3,7 +3,6 @@ import {
   NavigationContainer,
   DefaultTheme,
   DarkTheme,
-  Theme,
   useTheme,
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -70,6 +69,7 @@ export default function App() {
     };
 
     loadLanguage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
