@@ -41,6 +41,8 @@ export default function useLocationsService() {
         setLocations(
           isNewSearch ? [...newLocations] : [...locations, ...newLocations],
         );
+      } else if (isNewSearch) {
+        setLocations([]);
       }
     } catch (error) {
       console.log(error);

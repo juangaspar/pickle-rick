@@ -41,6 +41,8 @@ export default function useEpisodesService() {
         setEpisodes(
           isNewSearch ? [...newEpisodes] : [...episodes, ...newEpisodes],
         );
+      } else if (isNewSearch) {
+        setEpisodes([]);
       }
     } catch (error) {
       console.log(error);

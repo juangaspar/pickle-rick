@@ -25,6 +25,7 @@ const resources = {
       commentSuccess: 'Your comment was successfully sent. Thanks.',
       commentError:
         'There was a problem sending your comment. Please try again.',
+      noData: 'The list is empty',
     },
   },
   es: {
@@ -50,6 +51,7 @@ const resources = {
       commentSuccess: 'Tu comentario se ha enviado con éxito. Gracias.',
       commentError:
         'Ha ocurrido un error. Vuelve a enviar tu comentario de nuevo por favor.',
+      noData: 'No hay datos',
     },
   },
 };

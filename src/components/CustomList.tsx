@@ -5,11 +5,13 @@ import {
   FlatList,
   Image,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import SearchBar from '@app/components/SearchBar';
+import {useTranslation} from 'react-i18next';
 
 export default function CustomList({
   ItemRow,
@@ -20,6 +22,7 @@ export default function CustomList({
   useLoadService: Function;
   detailsRoute: string;
 }) {
+  const {t} = useTranslation();
   const {colors} = useTheme();
   const navigation = useNavigation();
   const [showSearchBar, setShowSearchBar] = useState(false);
@@ -47,14 +50,21 @@ export default function CustomList({
 
   return (
     <>
-      <FlatList
-        ListFooterComponent={<View style={styles.listFooter} />}
-        data={items}
-        onEndReached={() => {
-          loadMore(debouncedSearchText);
-        }}
-        renderItem={({item}) => <ItemRow item={item} onPress={onPress} />}
-      />
+      {items.length > 0 && (
+        <FlatList
+          ListFooterComponent={<View style={styles.listFooter} />}
+          data={items}
+          onEndReached={() => {
+            loadMore(debouncedSearchText);
+          }}
+          renderItem={({item}) => <ItemRow item={item} onPress={onPress} />}
+        />
+      )}
+      {items.length === 0 && (
+        <View style={styles.noDataContainer}>
+          <Text style={{color: colors.text}}>{t('noData')}</Text>
+        </View>
+      )}
       {isLoading && (
         <ActivityIndicator
           style={{
@@ -109,5 +119,12 @@ const styles = StyleSheet.create({
   searchButtonIcon: {
     width: 24,
     height: 24,
+  },
+  noDataContainer: {
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    marginTop: 16,
+    fontSize: 18,
   },
 });
