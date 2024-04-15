@@ -18,13 +18,18 @@ Este proyecto tiene como objetivo demostrar la implementación de una app usando
 - i18Next para el soporte multilenguaje (https://www.i18next.com/)
 
 ## Capturas
+![Screenshot_1713216728](https://github.com/juangaspar/pickle-rick/assets/3462727/44a7b8e8-2e2a-4d5d-8516-d38867e8f6fd)
+![Screenshot_1713216740](https://github.com/juangaspar/pickle-rick/assets/3462727/e4dc687c-2459-447c-ad3e-ac3976993bc3)
+![Screenshot_1713218289](https://github.com/juangaspar/pickle-rick/assets/3462727/5770f9f4-2da7-4117-b536-5a439f828af3)
+![Screenshot_1713218304](https://github.com/juangaspar/pickle-rick/assets/3462727/03f00317-bd34-4e73-baf8-0db8574f952b)
 
 ## Posibles mejoras en el proyecto
 
 Hay cosas mejorables dentro del proyecto que no se han realizado por una cuestión de tiempo. A continuación listo algunas de ellas:
 
 - Mejoras en la organización del código. Hay componentes que podrían reducir su tamaño como EpisodeScreen extrayendo algunas partes a componentes más pequeños.
-- Hay algunos errores de tipos que deberían ser resueltos
-- No se han implementado unit tests
+- Se podrían extraer las llamadas a la API a otra capa para poder desacoplar la implentación en los hooks.
+- Hay algunos errores de tipos que deberían ser resueltos.
+- No se han implementado unit tests.
 - Etc..
 
